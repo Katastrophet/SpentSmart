@@ -10,13 +10,13 @@
 
 <form asp-action="CreateEditExpenseForm">
     <label>Id</label>
-    <input class="form-control" type="number" placeholder="0" asp-formaction="Id"/>
+    <input class="form-control" type="number" placeholder="0" asp-for="Id"/>
     
     <label class="mt-4">Value</label>
-    <input class="form-control" type="number" placeholder="0" asp-formaction="Value" step="0.01" />
+    <input class="form-control" type="number" placeholder="0" asp-for="Value" step="0.01" />
     
     <label class="mt-4">Description</label>
-    <input class="form-control" type="text" placeholder="Add a descriptiun" asp-formaction="Description" />
+    <input class="form-control" type="text" placeholder="Add a descriptiun" asp-for="Description" />
 
     <button type="submit" class="btn btn-primary mt-4">Submit</button>
 </form>
