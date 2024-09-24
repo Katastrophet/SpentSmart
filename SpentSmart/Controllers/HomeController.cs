@@ -8,9 +8,12 @@ namespace SpentSmart.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly SpentSmartDbContext _context;
+
+        public HomeController(ILogger<HomeController> logger, SpentSmartDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -20,7 +23,8 @@ namespace SpentSmart.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            var allExpenses = _context.Expenses.ToList();
+            return View(allExpenses);
         }
 
         public IActionResult Expenses()
@@ -33,9 +37,11 @@ namespace SpentSmart.Controllers
             return View();
         }
 
-        public IActionResult CreateEditExpenseForm(Expense expense) { 
-            Console.WriteLine(expense.Description);
-            return RedirectToAction("Index");
+        public IActionResult CreateEditExpenseForm(Expense expense) 
+        { 
+            _context.Expenses.Add(expense);
+            _context.SaveChanges();
+            return RedirectToAction("Expenses");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
