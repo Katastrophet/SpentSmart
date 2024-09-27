@@ -32,14 +32,43 @@ namespace SpentSmart.Controllers
             return View(allExpenses);
         }
 
-        public IActionResult CreateEditExpense()
+        public IActionResult CreateEditExpense(int? id)
+        {   
+            // saved upon form submission in CreateEditExpenseForm
+            if(id == null)
+            {
+                return View();
+            } else
+            {
+                var expense = _context.Expenses.Find(id);
+                if(expense == null) {
+                    return NotFound();
+                } else {
+                    return View(expense);
+                }
+            }
+        }
+
+        public IActionResult DeleteExpense(int id)
         {
-            return View();
+            var expense = _context.Expenses.Find(id);
+            if(expense == null) {
+                return NotFound();
+            } else {
+                _context.Expenses.Remove(expense);
+                _context.SaveChanges();
+                return RedirectToAction("Expenses");
+            }
         }
 
         public IActionResult CreateEditExpenseForm(Expense expense) 
         { 
-            _context.Expenses.Add(expense);
+            if(expense.Id != 0)
+            {
+                _context.Expenses.Update(expense);
+            } else {
+                _context.Expenses.Add(expense);
+            }
             _context.SaveChanges();
             return RedirectToAction("Expenses");
         }
